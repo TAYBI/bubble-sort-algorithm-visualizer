@@ -1,22 +1,102 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="p5.js"></script>
-    <script src="p5.sound.min.js"></script>
-    <title>Document</title>
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
+<style>
+  * {
+    padding: 0;
+    margin: 0;
+  }
+</style>
+<body>
+  <script src="p5.js"></script>
+  <script src="p5.sound.min.js"></script>
+  <script>
+    var rectWidth = 4;
+    var arr = [];
+    var n = 0;
+
+    function setup() {
+      createCanvas(innerWidth, innerHeight);
+
+      var indexesEntered = [];
+
+      for (var i = 0; i < width / rectWidth; i++) {
+        var index = round(random(width / rectWidth));
+        var ok = true;
+        for (var j = 0; j < indexesEntered.length; j++) {
+          if (indexesEntered[j] === index) {
+            ok = false;
+            i--;
+            break;
+          }
+        }
+        if (ok) {
+          arr.push(index);
+          indexesEntered.push(index);
+        }
       }
-      body {
-        background: #b9b9b9;
+      n = arr.length;
+    }
+
+    function update() {
+      if (n != 0) bubbleSort(arr);
+    }
+
+    function draw() {
+      update();
+      background(00);
+      fill(255);
+
+      for (var i = 0; i < arr.length; i++) {
+        if (i === n) fill(100, 0, 255);
+        else fill(255);
+        rect(i * rectWidth, height, rectWidth, (-arr[i] * height) / arr.length);
       }
-    </style>
-  </head>
-  <body>
-    <script src="app.js"></script>
-  </body>
-</html>
+    }
+
+    function bubbleSort(arr) {
+      var newn = 0;
+      for (var i = 1; i < arr.length; i++) {
+        if (arr[i - 1] > arr[i]) {
+          var temp = arr[i - 1];
+          arr[i - 1] = arr[i];
+          arr[i] = temp;
+          newn = i;
+        }
+      }
+      n = newn;
+    }
+  </script>
+
+  <!-- <script>
+    let vals = [];
+    let i = 0;
+    let j = 0;
+
+    var indexesEntered = [];
+
+    function setup() {
+      createCanvas(510, 350);
+      for (let i = 0; i < width / 5; i++) {
+        vals[i] = random(height);
+      }
+    }
+
+    function draw() {
+      background(0);
+
+      let n = vals.length;
+      if (i < n) {
+        for (let j = 0; j < n - 1; j++) {
+          if (vals[j] > vals[j + 1]) {
+            let temp = vals[j];
+            vals[j] = vals[j + 1];
+            vals[j + 1] = temp;
+          }
+        }
+      } else noLoop();
+      i++;
+
+      for (let i = 0; i < n; i++) {
+        rect(i * 5, height - vals[i], 5, vals[i]);
+      }
+    }
+  </script> -->
+</body>
